@@ -12,16 +12,14 @@ jQuery(document).ready(function ($) {
         lrc = "";
         tlrc = "";
         lrc_interval = null;
+        volume = $("#volume");
     home = 'http://ksl.oldcat.me/index_music.html';  // homepage
 
-    var album_ID='';
-    // window.onload = loadMusic(album_ID);
-
+    album_ID='';
     audio=chrome.extension.getBackgroundPage().$('#audio');
     data_bg=chrome.extension.getBackgroundPage().data_bg;
     has_data_bg=chrome.extension.getBackgroundPage().has_data_bg;
     
-
     if (has_data_bg){
         title.html(data_bg.title);
         artist.html(data_bg.artist);
@@ -48,6 +46,33 @@ jQuery(document).ready(function ($) {
         }
 
     }
+
+    $(document).bind('keydown', 'n', function(){
+        loadMusic(album_ID);
+    });
+    $(document).bind('keydown', 'right', function(){
+        loadMusic(album_ID);
+    });
+    $(document).bind('keydown', 'p', function(){
+        shade.click();
+    });
+    $(document).bind('keydown', 'space', function(){
+        shade.click();
+    });
+    $(document).bind('keydown', 'up', function(){
+        if(audio[0].volume<0.99){
+            audio[0].volume += 0.01;
+        }
+        volume.html('volume:' + Math.round(100*audio[0].volume) + '%');
+        setTimeout(function(){volume.html('')}, 500);
+    });
+    $(document).bind('keydown', 'down', function(){
+        if(audio[0].volume>0.01){
+            audio[0].volume -= 0.01;
+        }
+        volume.html('volume:' + Math.round(100*audio[0].volume) + '%');
+        setTimeout(function(){volume.html('')}, 500);        
+    });
 
     $('.control-buttons').on('click', '.fa-button', function () {
         var that = $(this);
