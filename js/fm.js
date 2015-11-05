@@ -13,7 +13,7 @@ jQuery(document).ready(function ($) {
         tlrc = "";
         lrc_interval = null;
         volume = $("#volume");
-    home = 'http://ksl.oldcat.me/index_music.html';  // homepage
+    home = 'http://kslm.oldcat.me/';  // homepage
 
     album_ID='';
     audio=chrome.extension.getBackgroundPage().$('#audio');
