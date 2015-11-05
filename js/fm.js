@@ -163,8 +163,15 @@ jQuery(document).ready(function ($) {
         var play_time = Math.floor(audio[0].currentTime*5).toString();
         lrc_row = $("#lrc");
         tlrc_row = $("#tlrc");
+        if(play_time in lrc){
+            chrome.extension.getBackgroundPage().last_lyric_index=play_time;
+        }
+        else{
+            play_time=chrome.extension.getBackgroundPage().last_lyric_index;
+        }
         lrc_row.html(lrc[play_time]);
         tlrc_row.html(tlrc[play_time]);    
+        
     };
 
 
