@@ -48,9 +48,11 @@ jQuery(document).ready(function ($) {
     }
 
     $(document).bind('keydown', 'n', function(){
+        audio[0].pause();
         loadMusic(album_ID);
     });
     $(document).bind('keydown', 'right', function(){
+        audio[0].pause();
         loadMusic(album_ID);
     });
     $(document).bind('keydown', 'p', function(){
