@@ -4,6 +4,8 @@
 [Chrome商店下载](https://chrome.google.com/webstore/detail/key-sounds-label-fm/hljmofdmkkbjcnegokhlhnginjambmpf?authuser=1)
 
 ##更新日志
+- 1.2.3
+  - 改用后台更新信息
 - 1.2.1
   - 精准设置网络权限
 - 1.1
