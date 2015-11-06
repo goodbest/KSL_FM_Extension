@@ -1,18 +1,18 @@
 
 jQuery(document).ready(function ($) {
-        album = $('.audio-album');
-        cover = $('#cover_img');
-        title = $('#title');
-        artist = $('#artist');
-        ksl_id = $('#ksl_id');
-        lrc_row = $("#lrc");
-        tlrc_row = $("#tlrc");
-        elapsed = $('.elapsed');
-        shade = $('.shade-layer');
-        lrc = "";
-        tlrc = "";
-        lrc_interval = null;
-        volume = $("#volume");
+    album = $('.audio-album');
+    cover = $('#cover_img');
+    title = $('#title');
+    artist = $('#artist');
+    ksl_id = $('#ksl_id');
+    lrc_row = $("#lrc");
+    tlrc_row = $("#tlrc");
+    elapsed = $('.elapsed');
+    shade = $('.shade-layer');
+    lrc = "";
+    tlrc = "";
+    lrc_interval = null;
+    volume = $("#volume");
     home = 'http://kslm.oldcat.me/';  // homepage
 
     album_ID='';
@@ -38,7 +38,7 @@ jQuery(document).ready(function ($) {
         }
     }
 
-    if (!audio[0].paused){        
+    if (!audio[0].paused && audio[0].currentTime > 0){        
         album.removeClass('paused');
         shade.find('.fa').removeClass('fa-play').addClass('fa-pause');
         if (lrc != " " || tlrc != " ") {
@@ -49,11 +49,11 @@ jQuery(document).ready(function ($) {
 
     $(document).bind('keydown', 'n', function(){
         audio[0].pause();
-        loadMusic(album_ID);
+        chrome.extension.getBackgroundPage().loadMusic(album_ID);
     });
     $(document).bind('keydown', 'right', function(){
         audio[0].pause();
-        loadMusic(album_ID);
+        chrome.extension.getBackgroundPage().loadMusic(album_ID);
     });
     $(document).bind('keydown', 'p', function(){
         shade.click();
@@ -83,7 +83,7 @@ jQuery(document).ready(function ($) {
             window.open(home);
         } else if (that.hasClass('next-button')) {
             audio[0].pause();
-            loadMusic(album_ID);
+            chrome.extension.getBackgroundPage().loadMusic(album_ID);
         }
     });
 
@@ -93,7 +93,7 @@ jQuery(document).ready(function ($) {
             shade.find('.fa').removeClass('fa-play').addClass('fa-pause');
             if (lrc != " " || tlrc != " ") {
                 lrc_interval = setInterval("display_lrc()", 200);
-            }
+            }   
         },
         'pause': function () {
             album.addClass('paused');
@@ -114,7 +114,7 @@ jQuery(document).ready(function ($) {
     shade.click(function () {
         if (audio[0].paused){
         	if (audio[0].src.search('.mp3')<0){
-        		loadMusic(album_ID);
+        		chrome.extension.getBackgroundPage().loadMusic(album_ID);
         	}
         	else{
         		audio[0].play();
@@ -125,37 +125,6 @@ jQuery(document).ready(function ($) {
         } 
     });
 
-    function loadMusic(album_ID) {
-        if (typeof album_ID === 'undefined') {
-            album_ID = ''; 
-        }
-        // var audio=chrome.extension.getBackgroundPage().$('#audio');
-        $.getJSON('http://kslm.oldcat.me/player.php?_=' + $.now()+'&album='+album_ID, function (data) {
-        
-            chrome.extension.getBackgroundPage().data_bg=data;
-            chrome.extension.getBackgroundPage().has_data_bg=true;
-            chrome.extension.getBackgroundPage().$('#audio').attr('src', data.mp3);
-            chrome.extension.getBackgroundPage().audio[0].play();
-
-            cover.attr({
-                'src': data.cover + '?param=350y350',
-                'data-src': data.cover
-            });
-            title.html(data.title);
-            artist.html(data.artist);
-            ksl_id.html(data.album);
-            ksl_id.attr({
-                'title' : data.ksl_id
-            });
-
-            lrc = data.lrc;
-            lrc_row.html(" ");
-            tlrc = data.tlrc;
-            tlrc_row.html(" ");
-
-        });
-    }
-
     
 });
 
@@ -163,8 +132,7 @@ jQuery(document).ready(function ($) {
     function display_lrc(){
         // var audio=chrome.extension.getBackgroundPage().$('#audio');
         var play_time = Math.floor(audio[0].currentTime*5).toString();
-        lrc_row = $("#lrc");
-        tlrc_row = $("#tlrc");
+
         if(play_time in lrc){
             chrome.extension.getBackgroundPage().last_lyric_index=play_time;
         }
