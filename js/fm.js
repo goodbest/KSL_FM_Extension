@@ -85,6 +85,11 @@ jQuery(document).ready(function ($) {
             audio[0].pause();
             chrome.extension.getBackgroundPage().loadMusic(album_ID);
         }
+        else if (that.hasClass('trash-button')){
+            setBlacklist(chrome.extension.getBackgroundPage().data_bg);
+            audio[0].pause();
+            chrome.extension.getBackgroundPage().loadMusic(album_ID);
+        }
     });
 
     audio.on({
@@ -129,21 +134,42 @@ jQuery(document).ready(function ($) {
 });
 
 
-    function display_lrc(){
-        // var audio=chrome.extension.getBackgroundPage().$('#audio');
-        var play_time = Math.floor(audio[0].currentTime*5).toString();
+function display_lrc(){
+    // var audio=chrome.extension.getBackgroundPage().$('#audio');
+    var play_time = Math.floor(audio[0].currentTime*5).toString();
 
-        if(play_time in lrc){
-            chrome.extension.getBackgroundPage().last_lyric_index=play_time;
-        }
-        else{
-            play_time=chrome.extension.getBackgroundPage().last_lyric_index;
-        }
-        lrc_row.html(lrc[play_time]);
-        tlrc_row.html(tlrc[play_time]);    
-        
-    };
+    if(typeof(lrc)==="string"){
+        return;
+    }
+    if(play_time in lrc){
+        chrome.extension.getBackgroundPage().last_lyric_index=play_time;
+    }
+    else{
+        play_time=chrome.extension.getBackgroundPage().last_lyric_index;
+    }
+    lrc_row.html(lrc[play_time]);
+    tlrc_row.html(tlrc[play_time]);    
+    
+};
 
+function setBlacklist(item_data){
+    if(typeof(Storage) === "undefined" || item_data===null) {
+        return;
+    }
+
+    black_sid = localStorage.getItem("kslm_blacksid")
+    black_sid = black_sid ? JSON.parse(black_sid) : {};
+
+    var new_item={};
+    new_item["title"]=item_data["title"];
+    new_item["artist"]=item_data["artist"];
+    new_item["ksl_id"]=item_data["ksl_id"];
+    new_item["album"]=item_data["album"];
+    black_sid[item_data['sid']]=new_item;
+
+    localStorage.setItem("kslm_blacksid", JSON.stringify(black_sid)); 
+
+};
 
 
 

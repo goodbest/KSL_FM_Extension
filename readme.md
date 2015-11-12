@@ -1,9 +1,11 @@
 #Key Sounds Label 电台 Chrome插件
 
 ##插件下载
-[Chrome商店下载](https://chrome.google.com/webstore/detail/key-sounds-label-fm/hljmofdmkkbjcnegokhlhnginjambmpf?authuser=1)
+[Chrome商店下载](https://chrome.google.com/webstore/detail/key-sounds-label-fm/hljmofdmkkbjcnegokhlhnginjambmpf)
 
 ##更新日志
+- 1.3
+  - 加入黑名单功能(本地储存)，选项页面可以管理
 - 1.2.3
   - 改用后台更新信息
 - 1.2.1
