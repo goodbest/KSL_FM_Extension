@@ -31,8 +31,8 @@ jQuery(document).ready(function ($) {
             'src': data_bg.cover + '?param=350y350',
             'data-src': data_bg.cover
         });
-        if (data_bg.lrc != " " || data_bg.tlrc != " ") {
-            lrc=data_bg.lrc;
+        if (data_bg.olrc != " " || data_bg.tlrc != " ") {
+            lrc=data_bg.olrc;
             tlrc=data_bg.tlrc;
             lrc_interval = setInterval("display_lrc()", 200);
         }
@@ -171,6 +171,15 @@ function setBlacklist(item_data){
 
 };
 
+function getBitRate(){
+    default_br=192;
+    if(typeof(Storage) === "undefined") {
+        return default_br;
+    }
+    br = localStorage.getItem("bitrate");
+    br = br ? br : default_br;
+    return br;
+}
 
 
 

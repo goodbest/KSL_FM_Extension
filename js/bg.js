@@ -1,4 +1,4 @@
-jQuery(document).ready(function ($) {
+    jQuery(document).ready(function ($) {
 
     audio=$('#audio');
     has_data_bg=false;
@@ -53,10 +53,17 @@ function loadMusic(album_ID) {
     if (typeof album_ID === 'undefined') {
         album_ID = ''; 
     }
-    $.getJSON('http://kslm.oldcat.me/player.php?_=' + $.now()+'&album='+album_ID, function (data) {
+    if (album_ID != ''){
+        queryAlbumID = '/'+album_ID;
+    }
+    else{
+        queryAlbumID = '';
+    }
+    br = getBitRate();
+    $.getJSON('http://kslm.oldcat.me/api/KSL' + queryAlbumID + '/' +br, function (data) {
         data_bg=data;
         has_data_bg=true;
-        $('#audio').attr('src', data.mp3);
+        $('#audio').attr('src', data.url);
         $('#audio')[0].play();
 
         var views=chrome.extension.getViews();
@@ -74,7 +81,7 @@ function loadMusic(album_ID) {
                 view.ksl_id.attr({
                     'title' : data.ksl_id
                 });
-                view.lrc = data.lrc;
+                view.olrc = data.olrc;
                 view.lrc_row.html(" ");
                 view.tlrc = data.tlrc;
                 view.tlrc_row.html(" ");
@@ -82,3 +89,14 @@ function loadMusic(album_ID) {
         }
     });
 }
+
+function getBitRate(){
+    default_br=192;
+    if(typeof(Storage) === "undefined") {
+        return default_br;
+    }
+    br = localStorage.getItem("bitrate");
+    br = br ? br : default_br;
+    return br;
+}
+
